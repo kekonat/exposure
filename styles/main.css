@@ -34,17 +34,17 @@
     /* CUSTOMIZE THE CAROUSEL
     -------------------------------------------------- */
 
-	#myCarousel {
-	  height: 600px;
-	}
+    #myCarousel {
+      height: 600px;
+    }
 	
-	.carousel-slide {
-	  height:100%;
-	}
+    .carousel-slide {
+      height:100%;
+    }
 
-	.carousel-inner {
-	  height: 100%;
-	}
+    .carousel-inner {
+      height: 100%;
+    }
 
     .carousel .container {
       position: relative;
@@ -77,8 +77,8 @@
       padding: 0 20px;
       margin-top: 350px;
       margin-right: 25px;
-	  float: right;    
-	}
+      float: right;    
+    }
     
     .carousel-caption h1 {
       margin: 0;
@@ -100,7 +100,7 @@
     
     .carousel-caption .btn {
       margin-top: 10px;
- 	}
+    }
 
 
     /* RESPONSIVE CSS
@@ -176,7 +176,7 @@
 	/* FOOTER
     -------------------------------------------------- */
     footer {
-	  background-color: black;
+      background-color: black;
       color: #5a5a5a;
       height: 35px;
       width: 100%;
@@ -196,10 +196,10 @@
     	height: 100%;
     	width: 70%;
     	margin-top: 50px;
-		margin-left: auto;
-		margin-right: auto;
-		background-color: rgba(0,0,0,.8);
-		color: white;
+	margin-left: auto;
+	margin-right: auto;
+	background-color: rgba(0,0,0,.8);
+	color: white;
     }
     
     .content .container {
