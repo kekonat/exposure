@@ -13,7 +13,7 @@
     -------------------------------------------------- */
 
     .fixedbody {
-	  background-repeat: no-repeat;
+      background-repeat: no-repeat;
       background-attachment: fixed;
       background-size: cover;
       min-width: 950px;
@@ -29,6 +29,16 @@
 
     .navbar .nav > li > a {
       padding: 15px 20px;
+    }
+    
+    /* BLACK LAYER ON CAROUSEL
+    -------------------------------------------------- */
+    
+    .layer {
+    	position: relative;
+    	height: 100%;
+    	width: 100%;
+	background-color: rgba(0,0,0,.2);
     }
 
     /* CUSTOMIZE THE CAROUSEL
