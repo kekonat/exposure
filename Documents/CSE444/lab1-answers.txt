@@ -1,0 +1,34 @@
+Tyler Kekona
+CSE 444
+Lab 1 Write Up
+
+This lab was mainly about choosing what data structures to use to implement a database. Other than that, the majority of the assignment was implementing simple getter and setter methods. Listed below are the main modules and the decisions I made for each.
+
+Tuple and TupleDesc
+	The only decision I had to make for these modules was how to store the TDItems and Fields variables. I decided to use Arrays over ArrayList because the size of the data structure never changed. Since the TDItems and Fields variables were fixed the utility ArrayLists brought would not have been any helpful.
+
+Catalog
+	Implementing Catalog actually required quite a bit of time. The reason for this was because of the confusing specs for each method. In particular, it was not clear if both Names and TableID’s were unique. After drawing out a diagram of what attribute was required to obtain what elements, I realized that the TableId was sort of the “Primary Key”. Every attribute in the Catalog should be accessible through the TableId. Therefore, I implemented Catalog through a HashMap that hashed the TableId with an object that stored all other attributes. The only other thing that was needed was a way to retrieve the TableId given the Name of the table. For this relation, I created a second HashMap that mapped from the Name to the TableId. Every time a table was added, both Maps were first checked to confirm that the new Name and TableIds were unique. If it was not unique, I removed all of the previous data related to the Name or TableId, then inserted the new table to the datastructures.
+
+BufferPool
+	BufferPool was confusing at first, but became extremely simple after lecture. BufferPool is essentially a simple cache. I implemented BufferPool by created an array of Pages. If anyone were to ask BufferPool for a page, I would iterate through the array, check the PageId, and return the matching page. If no pages matched the desired PageId, BufferPool simply asked someone else to get it from disk. After receiving the fetched page from disk, it stores it in it’s array, and returns it to the original caller.
+
+HeapPage and HeapFile
+	HeapPage was extremely simple. The computations made in Homework 1 made this portion of the assignment very straight forward. The only ‘tricky’ part was handing the HeapPage headers because of the bit map aspect. Doing the bit-wise operations was different, but overall straight forward. 
+	HeapFile was also simple because of Homework 1. As far as HeapFile was concerned, HeapFile always asks BufferPool for specific HeapPages. Under the hood, BufferPool uses HeapFile’s readPage() if BufferPool did not already have the page cached.
+	The challenging part of HeapFile was iterator(). Implementing iterator() was the most ‘puzzling’ portion of the assignment. Up until this portion, the skeleton for every needed class was provided for us. When I first looked at HeapFile.iterator(), my first instinct was to look at the return type. Since iterator() returned a DbFileIterator, I would need to construct an object that implemented DbFileIterator. However, the only class provided that did so was TupleIterator. Since up until this part of the assignment, skeleton code for all necessary classes were provided, I assumed this implied I should use TupleIterator. However, I could not think of a reasonable was of implementing a HeapFile iterator using a TupleIterator. No single TupleIterator would be able to contain all tuples contained in a single HeapFile. Therefore, I needed an Iterator that would only read a portion of the tuples at a time while still having access to all tuples in the file. My solution was to construct a HeapFileIterator.
+
+HeapFileIterator
+	Once I realized I could create new classes, implementing HeapFile’s iterator() with my HeapFileIterator was very easy. The idea is, HeapFileIterator has an underlying TupleIterator iterating over a single HeapPage. When we reach the end of the TupleIterator, we move onto the next HeapPage in the HeapFile and start over. When we finish iterating through every tuple on every page, we HeapFileIterator.next() and hasNext() would return their respective “empty” case values.
+
+SeqScan
+	SeqScan was also very simple. The idea was, SecScan is a wrapper for an underlying DbFileIterator. There were several simple getter and setter methods. The respective iterator-like methods simply called the underlying DbFileIterator’s iterator methods.
+
+A unit test that is missing from the current Test Suit is testing HeapFile’s page order. Files are initially stored in a File object. This is converted into a HeapFile, constructed of several HeapPages. The order of these pages should be the same, since the original File object may have previously sorted the Tuples. 
+
+I spent roughly 20 hours on this assignment. The difficult/confusing parts were:
+•	Understanding that Catalog Name/TableId were essential both individually primary keys
+•	Assuming that all necessary skeleton code was provided
+	•	I was looking for a provided ‘HeapFileIterator’ to implement. Did not realize I needed to write this part from scratch since everything else was provided
+•	HeapFile Test Suit did not cover page order
+	•	My first page was implemented correctly, but the subsequent pages were not being read from correctly. None of the current HeapFile tests check beyond a first page, so this was not caught until SeqScan’s tests
